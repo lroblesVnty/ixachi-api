@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Predio extends Model
 {
@@ -19,5 +20,10 @@ class Predio extends Model
 
     public function propietario(){
         return $this->belongsTo(Propietario::class,'IdPropietario','IdPropietario');
+    }
+
+    public function permiso(): HasOne{
+           //2do arg:FK, 3arg:PK de este modelo(padre)(tabla gespredios)
+        return $this->hasOne(Permiso::class,'IdPredio','IdPredio');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Propietario extends Model
 {
@@ -17,7 +18,7 @@ class Propietario extends Model
     //protected $connection='name_con';
    // protected $hidden=['updated_at'];
 
-    public function predios(){
+    public function predios(): HasMany{
         return $this->hasMany('App\Models\Predio','IdPropietario','IdPropietario');
     }
 }
