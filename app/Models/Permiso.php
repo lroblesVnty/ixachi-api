@@ -18,4 +18,5 @@ class Permiso extends Model
         //2do arg:FK, 3arg:PK de este modelo(padre)
         return $this->belongsTo(Predio::class,'IdPredio','IdPredio');
     }
+
 }

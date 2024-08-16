@@ -30,4 +30,5 @@ Route::get('permiso',[PermisoController::class,'index']);
 Route::get('permiso/predio',[PermisoController::class,'predio']);
 
 Route::get('predio/permiso',[PredioController::class,'permiso']);
+Route::get('predio/propietario',[PredioController::class,'predioProp']);
 
