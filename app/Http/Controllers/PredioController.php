@@ -20,7 +20,8 @@ class PredioController extends Controller
             ->whereColumn('IdPropietario', 'gespredios.IdPropietario')
         ])->get();*/
         return Predio::with(['permiso'=>function(Builder $query){
-            $query->where('IdEstatusPerm','not like','3');
+            $query->where('IdEstatusPerm','like',2);
+           // $query->where('IdEstatusPerm','not in','3');
             $query->select('IdPermiso','numPermiso','IdPredio');
         }
         ,'propietario:IdPropietario,nombre,apPaterno,apMaterno'])->get(['IdPredio','huertos','noParcela','IdPropietario']);

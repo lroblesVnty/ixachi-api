@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LevantamientoController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\PredioController;
 use App\Http\Controllers\PropietarioController;
@@ -28,7 +29,10 @@ Route::get('propietario/predios',[PropietarioController::class,'predios']);
 
 Route::get('permiso',[PermisoController::class,'index']);
 Route::get('permiso/predio',[PermisoController::class,'predio']);
+Route::get('permiso/lev',[PermisoController::class,'prediosLev']);
 
 Route::get('predio/permiso',[PredioController::class,'permiso']);
 Route::get('predio/propietario',[PredioController::class,'predioProp']);
+
+Route::get('levantamiento/permiso',[LevantamientoController::class,'permiso']);
 
