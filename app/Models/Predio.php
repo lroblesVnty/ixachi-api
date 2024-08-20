@@ -26,4 +26,9 @@ class Predio extends Model
            //2do arg:FK, 3arg:PK de este modelo(padre)(tabla gespredios)
         return $this->hasOne(Permiso::class,'IdPredio','IdPredio');
     }
+    
+    public function linea(){
+        //2do arg:FK, 3arg:PK de este modelo(padre)(tabla lineas)
+        return $this->belongsTo(Linea::class,'idLinea','linea');
+    }
 }
