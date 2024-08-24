@@ -29,7 +29,7 @@ Route::get('propietario/predios',[PropietarioController::class,'predios']);
 
 Route::get('permiso',[PermisoController::class,'index']);
 Route::get('permiso/predio',[PermisoController::class,'predio']);
-Route::get('permiso/lev',[PermisoController::class,'prediosLev']);
+Route::get('permiso/lev/{proyecto}',[PermisoController::class,'prediosLev']);
 
 Route::get('predio/permiso',[PredioController::class,'permiso']);
 Route::get('predio/propietario',[PredioController::class,'predioProp']);

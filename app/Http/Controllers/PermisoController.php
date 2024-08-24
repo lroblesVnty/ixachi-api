@@ -7,7 +7,7 @@ use App\Models\Levantamiento;
 use App\Models\Linea;
 use App\Models\Permiso;
 use App\Models\Predio;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,39 +23,49 @@ class PermisoController extends Controller{
         return $predios;
     }
 
-    public function prediosLev() {
-        $permisoLevan=Levantamiento::select(['IdPermiso'])->get();
-        $lineasP=Linea::select(['linea'])
-        ->where('idProyecto', '=', '2D SUR')
+    public function prediosLev($proyecto) {
+        $lineas=Linea::select(['linea'])
+        ->where('idProyecto', '=', $proyecto)
         ->get();
+        if ($lineas->isEmpty() ) {
+            $data = [
+                'message' => 'Proyecto no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
 
-         DB::table('gespermisos')
-            ->join('gespredios', 'gespermisos.IdPredio', '=', 'gespredios.IdPredio')
-            ->select('gespermisos.IdPermiso', 'gespermisos.IdPredio', 'gesPredios.IdLinea')
-            ->where('IdEstatusPerm', 'not like', 3)
-            ->whereIn('gesPredios.IdLinea',$lineasP)
-            ->whereNotIn('IdPermiso',$permisoLevan)
-            ->get();
+        $permisoLevan=Levantamiento::select(['IdPermiso'])->get();
+        return Permiso::withWhereHas('predio', function ($query) use ($lineas){
+            $query->with('propietario',function ($q){
+                $q->select('IdPropietario',DB::raw("CONCAT_WS(' ', nombre, apPaterno, apMaterno) AS nombre"));
+            });
+            $query->select('IdLinea','IdPredio','IdPropietario');
+            $query->whereIn('IdLinea',$lineas);
 
-
-       // return Permiso::with(['predio:IdPredio,huertos,noParcela,idLinea'])->get();
-        return Permiso::with(['predio'=>function(Builder $query){
-                $lineasP=Linea::select(['linea'])
-                ->where('idProyecto', '=', '2D SUR')
-                ->get();
-               // $query->select('IdLinea','IdPredio')
-                $query->whereIn('IdLinea',$lineasP);
-            
-            }])
+        })
         ->where('IdEstatusPerm', 'not like', 3)
         ->whereNotIn('IdPermiso',$permisoLevan)
-        /*->whereNotIn('IdPermiso',function (Builder $query) {
-            $query->select('IdPermiso')->from((new Levantamiento)->getTable());
-                
-        })*/
-        ->get();
-    }
-    
+        ->get(['IdPermiso','numPermiso','IdPredio']);
 
+        
+        /*Permiso::whereHas('predio', function (Builder $query) {
+            $query->select('IdLinea','IdPredio');
+        })->get();*/
+        
+
+        DB::table('gespermisos')
+        ->join('gespredios', 'gespermisos.IdPredio', '=', 'gespredios.IdPredio')
+        ->join('gespropietarios', 'gespredios.IdPredio', '=', 'gespropietarios.IdPropietario')
+        ->select('gespermisos.IdPermiso', 'gespermisos.IdPredio', 'gesPredios.IdLinea',DB::raw("CONCAT_WS(' ', nombre, apPaterno, apMaterno) AS nombre"))
+        ->where('IdEstatusPerm', 'not like', 3)
+        ->whereIn('gesPredios.IdLinea',$lineas)
+        ->whereNotIn('IdPermiso',$permisoLevan)
+        ->get();
+
+
+     
+    
+    }
 
 }
