@@ -85,9 +85,16 @@ class PermisoController extends Controller{
 
                 
             });
+            $query->select('IdPredio','IdPropietario','gesestados.nombreEstado','nombreMunicipio')
+            ->join('gesestados', 'gespredios.idEstado', '=', 'gesestados.IdEstado')
+            ->join('gesmunicipios', 'gespredios.idMunicipio', '=', 'gesmunicipios.IdMunicipio');
+            
             //obtnerr el estado u municipio del predio
-           // $query->where('IdEstatusPerm','not in','3');
-        }])->find($permiso);
+        }])->find($permiso,['IdPermiso','fechaPermiso','observacionesPermiso','IdPredio']);
+        DB::table('gesestados')
+       // ->join('gespredios', 'gespermisos.IdPredio', '=', 'gespredios.IdPredio')
+        ->select('IdEstado', 'nombreEstado')
+        ->get();
     }
 
 }
