@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LevantamientoController;
+use App\Http\Controllers\LineaController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\PredioController;
 use App\Http\Controllers\PropietarioController;
@@ -41,3 +42,5 @@ Route::get('levantamiento/permiso',[LevantamientoController::class,'permiso']);
 
 Route::get('proyecto',[ProyectoController::class,'index']);
 Route::get('proyecto/dept',[ProyectoController::class,'proyByDept']);
+
+Route::get('linea',[LineaController::class,'lineaByProyTipo']);

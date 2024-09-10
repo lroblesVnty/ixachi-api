@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Linea extends Model{
+class Estaca extends Model{
     use HasFactory;
 
-    protected $table='gesconfiguracionlineas';
+    protected $table='gesestacas';
     public $timestamps=false;
     protected $primaryKey='linea';
     public $incrementing=false; //if primary key is not autoincrement
