@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Estaca;
 use App\Models\Linea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,8 +55,8 @@ class LineaController extends Controller
 
         $request->validate(
             [
-            'proyecto' => 'required|max:1',
-            'tipoLinea' => 'required',
+            'proyecto' => 'required|exists:proyectos,nombreProyecto',
+            'tipoLinea' => 'required|in:RECEPTORA,AMPLIACIÓN,OFFSET',
             ],
             [//custom messages
                 'proyecto.required' => 'El campo :attribute es requerido',
@@ -65,13 +66,20 @@ class LineaController extends Controller
 
         $proy = $request->query('proyecto');
         $tipo = $request->query('tipoLinea');
+        $tlinea = ($tipo == 'RECEPTORA') ? "estaca" : "pt";
         $lineas=Linea::select(['linea'])
         ->where('idProyecto', '=', $proy)
         ->get();
-        return DB::table('gesestacas')
+
+        return Estaca::select(['linea'])
+        ->distinct()
+        ->where('tipo', '=', $tlinea)
+        ->whereIn('linea',$lineas)
+        ->get();
+        DB::table('gesestacas')
         ->select('linea')
         ->distinct()
-        ->where('tipo', '=', $tipo)
+        ->where('tipo', '=', $tlinea)
         ->whereIn('linea',$lineas)
         ->get();
     }
