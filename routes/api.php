@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CultivoController;
+use App\Http\Controllers\EstacaController;
 use App\Http\Controllers\LevantamientoController;
 use App\Http\Controllers\LineaController;
 use App\Http\Controllers\PermisoController;
@@ -44,3 +46,7 @@ Route::get('proyecto',[ProyectoController::class,'index']);
 Route::get('proyecto/dept',[ProyectoController::class,'proyByDept']);
 
 Route::get('linea',[LineaController::class,'lineaByProyTipo']);
+
+Route::get('cultivos',[CultivoController::class,'index']);
+
+Route::get('estacas',[EstacaController::class,'estacasbylinea']);
