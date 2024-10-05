@@ -48,5 +48,29 @@ class EstacaController extends Controller{
         })
         ->get();
     }
+
+    public function getEstacaFinal(Request $request){
+        $request->validate(
+            [
+            'linea' => 'required|exists:gesconfiguracionlineas,linea|numeric|max_digits:5',
+            'tipoLinea' => 'required|in:RECEPTORA,AMPLIACIÓN,OFFSET',
+            'estacaIni' => 'required|exists:gesestacas,estaca|numeric ',
+            ]
+            /*[//custom messages
+                'linea.required' => 'El campo :attribute es requerido',
+                'tipoLinea.required' => 'El campo :attribute es requerido'
+            ]*/
+        );
+        $tipoLinea = $request->query('tipoLinea');
+        $linea = $request->query('linea');
+        $estacaIni = $request->query('estacaIni');
+        $tipoLinea=$tipoLinea=='RECEPTORA'?'estaca':'PT';
+        return Estaca::select(['estaca'])
+        ->where('tipo', '=', $tipoLinea)
+        ->where('linea', '=', $linea)
+        ->where('estaca', '>', $estacaIni)
+        ->get();
+
+    }
     
 }

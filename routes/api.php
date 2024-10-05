@@ -50,3 +50,4 @@ Route::get('linea',[LineaController::class,'lineaByProyTipo']);
 Route::get('cultivos',[CultivoController::class,'index']);
 
 Route::get('estacas',[EstacaController::class,'estacasbylinea']);
+Route::get('estacaFinal',[EstacaController::class,'getEstacaFinal']);
