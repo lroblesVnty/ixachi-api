@@ -46,6 +46,7 @@ Route::get('proyecto',[ProyectoController::class,'index']);
 Route::get('proyecto/dept',[ProyectoController::class,'proyByDept']);
 
 Route::get('linea',[LineaController::class,'lineaByProyTipo']);
+Route::get('linea/distancia/{linea}',[LineaController::class,'distanciaByLinea']);
 
 Route::get('cultivos',[CultivoController::class,'index']);
 

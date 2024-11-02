@@ -83,4 +83,23 @@ class LineaController extends Controller
         ->whereIn('linea',$lineas)
         ->get();
     }
+
+    public function distanciaByLinea (Request $request,$linea){
+        $request->merge(['linea' => $request->route('linea')]);
+        $request->validate(
+            [
+            'linea' => 'required|exists:gesconfiguracionlineas,linea'
+            ]
+        );
+
+        $distancia=Linea::select(['distancia'])
+        ->where('linea', '=', $linea)
+        ->get();
+      response()->json(["distancia"=>$distancia],401);
+
+       return Linea::where('linea', $linea)
+               ->first(['distancia']);
+        
+
+    }
 }
