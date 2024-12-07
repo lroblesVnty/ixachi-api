@@ -22,8 +22,11 @@ class LevantamientoController extends Controller{
             'detalleLev'=>'required|array',
             'detalleLev.*.tipoLinea'=>'required|string|max:2|in:R,A,O',
             'detalleLev.*.linea'=>'required|integer|max_digits:10|exists:gesconfiguracionlineas,linea',
-            'detalleLev.*.estacaIni'=>'required|numeric|max_digits:7',
-            'detalleLev.*.estacaInim'=>'required_if:detalleLev.*.tipoLinea,O|numeric|max_digits:7',
+            'detalleLev.*.estacaIni'=>'required|numeric|max_digits:7|exists:gesestacas,estaca',
+            'detalleLev.*.estacaInim'=>'required_if:detalleLev.*.tipoLinea,O|numeric|max_digits:7|exclude_if:detalleLev.*.tipoLinea,A',
+            'detalleLev.*.estacaFin'=>'required_if:detalleLev.*.tipoLinea,R|numeric|max_digits:7|exists:gesestacas,estaca|gt:detalleLev.*.estacaIni|exclude_unless:detalleLev.*.tipoLinea,R',
+            'detalleLev.*.estacaFinm'=>'nullable|numeric|max_digits:7|min:1|exclude_unless:detalleLev.*.tipoLinea,R',
+            'detalleLev.*.cultivo'=>'required|integer|max_digits:7|exists:gescultivostab,idCultivo',
         ];
         $messages= [
             //customMessages
@@ -65,7 +68,7 @@ class LevantamientoController extends Controller{
             return response()->json(['errors' => $errors], 422); 
         }
         
-        return  response()->json(["distancia"=>'todo ok'],200);
+        return  response()->json(["status"=>'todo ok','data'=>$validator->validated()],200);
 
     }
     
