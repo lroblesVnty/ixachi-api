@@ -7,6 +7,7 @@ use App\Models\Levantamiento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreLevantamientoRequest;
+use Carbon\Carbon;
 
 class LevantamientoController extends Controller{
 
@@ -24,13 +25,35 @@ class LevantamientoController extends Controller{
        
         
         //return  response()->json(["status"=>'todo ok','data'=>$validator->validated()],200);
-       /* $requValid=$request->validated();
+        $requValid=$request->validated();
+        //*formas de verificar si existe un campo del request
+       // forma1= $valor = $request->input('campo', 'valor por defecto');
+        //forma2 if ($request->has('campo')) {
+        //TODO mapear los campos del request a los campos de la base de datos
+        $detalleData = collect($requValid['detalleLev'])->map(function ($detalle) {
+            return [ 'tipoLinea' => $detalle['tipoLinea'], 'linea' => $detalle['linea'],
+            'estacaIni'=>$detalle['estacaIni'],'mtsIni'=>$detalle['estacaInim']??null,
+            'estacaFin'=>$detalle['estacaFin']??null,'mtsFin'=>(isset($detalle['estacaFinm']))?$detalle['estacaFinm']:null,
+            'metros'=>$detalle['metros'],'metros2'=>$detalle['metros2'],'km'=>$detalle['km'],
+            'ha'=>$detalle['ha'],'idCultivo'=>$detalle['cultivo'] 
+            ];
+         })->toArray();
+
+         // Crear múltiples posts $posts = [ ['title' => 'Segundo Post', 'content' => 'Contenido del segundo post.'], ['title' => 'Tercer Post', 'content' => 'Contenido del tercer post.'], ]; // Guardar los posts a través de la relación del usuario $user->posts()->createMany($posts);
+         $fechaLev = Carbon::createFromFormat('d/m/Y', $requValid['fechaLev'])->format('Y-m-d');
         $levantamiento = Levantamiento::create([ 
-            'fechaLevantamiento' => $requValid->fechaLev, 'observaciones' => $requValid->observaciones, 
-            'idPermiso' => $requValid->idPermiso,'idPersonal'=>57, 
-            'imgUrl' => '','numFiniquito'=>$requValid->finiquito, 
+            'fechaLevantamiento' => $fechaLev, 'observaciones' => $requValid['observaciones'], 
+            'idPermiso' => $requValid['idPermiso'],'idPersonal'=>57, 
+            'imgUrl' => '','numFiniquito'=>$requValid['finiquito'], 
+        ]);
+       // $detalle = $levantamiento->detalles()->create($detalleData);
+        $levantamiento->detalles()->createMany($detalleData);
+        /*$detalle = $levantamiento->detalle()->create([
+            'tipoLinea' => 'Otro Post', 'content' => 'Más contenido del post.',
         ]);*/
-        return  response()->json(["status"=>'todo ok',"data"=>$request->validated()],200);
+
+       //return  response()->json(["status"=>'todo ok',"data"=>$request->validated(),'postData'=>$detalleData],200);
+        return  response()->json(["status"=>'todo ok','data'=>$levantamiento,'detalle'=>''],200);
 
     }
     

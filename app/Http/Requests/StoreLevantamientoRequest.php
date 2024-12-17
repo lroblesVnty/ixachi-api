@@ -25,7 +25,7 @@ class StoreLevantamientoRequest extends FormRequest
         return [
             'fechaLev' => 'required|date_format:d/m/Y',
             'observaciones' => 'nullable|string',
-            'idPermiso' => 'required|unique:geslevantamientos,idPermiso|integer|max_digits:5',
+            'idPermiso' => 'required|unique:geslevantamientos,idPermiso|integer|max_digits:5|exists:gespermisos,idPermiso',
             'idPersonal' => 'required|integer|exists:catpersonal,IdPersonal|max_digits:5',
             //'imgUrl' => 'required|unique:geslevantamientos,idPermiso',
             //'archivos',
@@ -39,10 +39,10 @@ class StoreLevantamientoRequest extends FormRequest
             'detalleLev.*.estacaFin'=>'required_if:detalleLev.*.tipoLinea,R|numeric|max_digits:7|exists:gesestacas,estaca|gt:detalleLev.*.estacaIni|exclude_unless:detalleLev.*.tipoLinea,R',
             'detalleLev.*.estacaFinm'=>'nullable|numeric|max_digits:7|min:1|exclude_unless:detalleLev.*.tipoLinea,R',
             'detalleLev.*.cultivo'=>'required|integer|max_digits:7|exists:gescultivostab,idCultivo',
-            'detalleLev.*.metros'=>'numeric|max_digits:7|min:0',
-            'detalleLev.*.metros2'=>'numeric|max_digits:7|min:0',
-            'detalleLev.*.km'=>'numeric|max_digits:7|min:0',
-            'detalleLev.*.ha'=>'numeric|max_digits:7|min:0|min_digits:1|required',
+            'detalleLev.*.metros'=>'numeric|decimal:0,5|min:0',
+            'detalleLev.*.metros2'=>'numeric|decimal:0,5|min:0',
+            'detalleLev.*.km'=>'numeric|decimal:0,5|min:0',
+            'detalleLev.*.ha'=>'numeric|decimal:0,5|min:0|min_digits:1|required',
         ];
     }
 
