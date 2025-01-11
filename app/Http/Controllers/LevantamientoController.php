@@ -42,7 +42,7 @@ class LevantamientoController extends Controller{
          // Crear múltiples posts $posts = [ ['title' => 'Segundo Post', 'content' => 'Contenido del segundo post.'], ['title' => 'Tercer Post', 'content' => 'Contenido del tercer post.'], ]; // Guardar los posts a través de la relación del usuario $user->posts()->createMany($posts);
          $fechaLev = Carbon::createFromFormat('d/m/Y', $requValid['fechaLev'])->format('Y-m-d');
         $levantamiento = Levantamiento::create([ 
-            'fechaLevantamiento' => $fechaLev, 'observaciones' => $requValid['observaciones'], 
+            'fechaLevantamiento' => $fechaLev, 'observaciones' => $requValid['observaciones']??null, 
             'idPermiso' => $requValid['idPermiso'],'idPersonal'=>57, 
             'imgUrl' => '','numFiniquito'=>$requValid['finiquito'], 
         ]);

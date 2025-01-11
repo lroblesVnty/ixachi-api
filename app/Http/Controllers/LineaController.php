@@ -56,7 +56,7 @@ class LineaController extends Controller
         $request->validate(
             [
             'proyecto' => 'required|exists:proyectos,nombreProyecto',
-            'tipoLinea' => 'required|in:RECEPTORA,AMPLIACIÓN,OFFSET',
+            'tipoLinea' => 'required|in:R,A,O',
             ],
             [//custom messages
                 'proyecto.required' => 'El campo :attribute es requerido',
@@ -66,7 +66,7 @@ class LineaController extends Controller
 
         $proy = $request->query('proyecto');
         $tipo = $request->query('tipoLinea');
-        $tlinea = ($tipo == 'RECEPTORA') ? "estaca" : "pt";
+        $tlinea = ($tipo == 'R') ? "estaca" : "pt";
         $lineas=Linea::select(['linea'])
         ->where('idProyecto', '=', $proy)
         ->get();

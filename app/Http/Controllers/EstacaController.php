@@ -14,7 +14,7 @@ class EstacaController extends Controller{
         $request->validate(
             [
             'linea' => 'required|exists:gesconfiguracionlineas,linea|numeric|max_digits:5',
-            'tipoLinea' => 'required|in:RECEPTORA,AMPLIACIÓN,OFFSET',
+            'tipoLinea' => 'required|in:R,A,O',
             ]
             /*[//custom messages
                 'linea.required' => 'El campo :attribute es requerido',
@@ -24,7 +24,7 @@ class EstacaController extends Controller{
 
         $linea = $request->query('linea');
         $tipoLinea = $request->query('tipoLinea');
-        if($tipoLinea!='RECEPTORA'){
+        if($tipoLinea!='R'){
             return Estaca::select(['estaca'])
             ->where('tipo', '=', 'PT')
             ->where('linea', '=', $linea)
@@ -53,7 +53,7 @@ class EstacaController extends Controller{
         $request->validate(
             [
             'linea' => 'required|exists:gesconfiguracionlineas,linea|numeric|max_digits:5',
-            'tipoLinea' => 'required|in:RECEPTORA,AMPLIACIÓN,OFFSET',
+            'tipoLinea' => 'required|in:R,A,O',
             'estacaIni' => 'required|exists:gesestacas,estaca|numeric ',
             ]
             /*[//custom messages
@@ -64,7 +64,7 @@ class EstacaController extends Controller{
         $tipoLinea = $request->query('tipoLinea');
         $linea = $request->query('linea');
         $estacaIni = $request->query('estacaIni');
-        $tipoLinea=$tipoLinea=='RECEPTORA'?'estaca':'PT';
+        $tipoLinea=$tipoLinea=='R'?'estaca':'PT';
         return Estaca::select(['estaca'])
         ->where('tipo', '=', $tipoLinea)
         ->where('linea', '=', $linea)
