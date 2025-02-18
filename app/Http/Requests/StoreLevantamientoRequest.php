@@ -35,7 +35,7 @@ class StoreLevantamientoRequest extends FormRequest
             'detalleLev.*.tipoLinea'=>'required|string|max:2|in:R,A,O',
             'detalleLev.*.linea'=>'required|integer|max_digits:10|exists:gesconfiguracionlineas,linea',
             'detalleLev.*.estacaIni'=>'required|numeric|exists:gesestacas,estaca|regex:/^\d{1,5}(\.\d{1,5})?$/',
-            'detalleLev.*.estacaInim'=>'required_if:detalleLev.*.tipoLinea,O|numeric|max_digits:7|exclude_if:detalleLev.*.tipoLinea,A',
+            'detalleLev.*.estacaInim'=>'required_if:detalleLev.*.tipoLinea,O|numeric|max_digits:7|exclude_if:detalleLev.*.tipoLinea,A|nullable',
             'detalleLev.*.estacaFin'=>'required_if:detalleLev.*.tipoLinea,R|numeric|max_digits:7|exists:gesestacas,estaca|gt:detalleLev.*.estacaIni|exclude_unless:detalleLev.*.tipoLinea,R',
             'detalleLev.*.estacaFinm'=>'nullable|numeric|max_digits:7|min:1|exclude_unless:detalleLev.*.tipoLinea,R',
             'detalleLev.*.cultivo'=>'required|integer|max_digits:7|exists:gescultivostab,idCultivo',
@@ -43,6 +43,7 @@ class StoreLevantamientoRequest extends FormRequest
             'detalleLev.*.metros2'=>'numeric|decimal:0,5|min:0',
             'detalleLev.*.km'=>'numeric|decimal:0,5|min:0',
             'detalleLev.*.ha'=>'numeric|decimal:0,5|min:0|required',
+            //permitir que estacainim sea null cuando tipoLinea=R
         ];
     }
 
