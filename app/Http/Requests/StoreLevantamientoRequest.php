@@ -28,7 +28,7 @@ class StoreLevantamientoRequest extends FormRequest
             'idPermiso' => 'required|unique:geslevantamientos,idPermiso|integer|max_digits:5|exists:gespermisos,idPermiso',
             'idPersonal' => 'required|integer|exists:catpersonal,IdPersonal|max_digits:5',
             //'imgUrl' => 'required|unique:geslevantamientos,idPermiso',
-            //'archivos',
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'finiquito' => 'required|unique:geslevantamientos,numFiniquito|numeric|max_digits:5',
             //TODO agregar los campos del detalle levantamiento
             'detalleLev'=>'required|array',

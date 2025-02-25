@@ -19,11 +19,24 @@ class LevantamientoController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(StoreLevantamientoRequest $request){
+
+
+        if ($request->hasFile('foto')) {
+            if ($request->validated()) {
+                $foto = $request->file('foto');
+                $dir='fotos/P-'.$request->input('idPermiso');
+                $rutaFoto = $foto->store($dir, 'public'); //*se guarda con un nombre generado automaticamente
+               //$rutaFoto = $request->photo->storeAs('images', 'filename.jpg', 'public');//*nombre personalizado
+               //TODO PERSONALIZAR LA RUTA CON EL NOMBRE DEL PROPIETAARIO Y EL PERMISO
+            }
+        }
+        return response()->json([
+            'foto' => $rutaFoto ?? null,
+        ]);
        
       //  $validator = Validator::make($request->all(), $rules, $messages,$attributes);
         //*agrupar los errores por cada elemento del arreglo 
        
-        
         //return  response()->json(["status"=>'todo ok','data'=>$validator->validated()],200);
         $requValid=$request->validated();
         //*formas de verificar si existe un campo del request
@@ -53,7 +66,7 @@ class LevantamientoController extends Controller{
         ]);*/
 
        //return  response()->json(["status"=>'todo ok',"data"=>$request->validated(),'postData'=>$detalleData],200);
-        return  response()->json(["status"=>'todo ok','data'=>$levantamiento,'detalle'=>''],200);
+        return  response()->json(["status"=>'todo ok','data'=>$levantamiento,'detalle'=>''],201);
 
     }
     
