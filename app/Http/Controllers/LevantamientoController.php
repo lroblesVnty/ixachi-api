@@ -20,7 +20,7 @@ class LevantamientoController extends Controller{
      */
     public function store(StoreLevantamientoRequest $request){
 
-
+        $rutaFoto='';
         if ($request->hasFile('foto')) {
             if ($request->validated()) {
                 $foto = $request->file('foto');
@@ -29,11 +29,7 @@ class LevantamientoController extends Controller{
                //$rutaFoto = $request->photo->storeAs('images', 'filename.jpg', 'public');//*nombre personalizado
                //TODO PERSONALIZAR LA RUTA CON EL NOMBRE DEL PROPIETAARIO Y EL PERMISO
             }
-        }
-        return response()->json([
-            'foto' => $rutaFoto ?? null,
-        ]);
-       
+        }       
       //  $validator = Validator::make($request->all(), $rules, $messages,$attributes);
         //*agrupar los errores por cada elemento del arreglo 
        
@@ -57,7 +53,7 @@ class LevantamientoController extends Controller{
         $levantamiento = Levantamiento::create([ 
             'fechaLevantamiento' => $fechaLev, 'observaciones' => $requValid['observaciones']??null, 
             'idPermiso' => $requValid['idPermiso'],'idPersonal'=>57, 
-            'imgUrl' => '','numFiniquito'=>$requValid['finiquito'], 
+            'imgUrl' => $rutaFoto,'numFiniquito'=>$requValid['finiquito'], 
         ]);
        // $detalle = $levantamiento->detalles()->create($detalleData);
         $levantamiento->detalles()->createMany($detalleData);
