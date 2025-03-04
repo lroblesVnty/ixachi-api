@@ -8,8 +8,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreLevantamientoRequest;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class LevantamientoController extends Controller{
+
+    public function index() {
+        
+        return Levantamiento::select('IdLevantamiento',DB::raw("DATE_FORMAT(fechaLevantamiento, '%d-%m-%Y') as fechaLevantamiento"),'numFiniquito','IdPermiso')
+        ->with(['permiso' => function ($query) {
+            $query->select('IdPermiso','fechaPermiso','numPermiso','IdPredio');
+        }, 'permiso.predio' => function ($query) {
+            $query->select('IdPredio', 'IdPropietario');
+        },'permiso.predio.propietario'=>function($query){
+            $query->select('IdPropietario',DB::raw("CONCAT_WS(' ', nombre, apPaterno, apMaterno) AS nombre"));
+        }
+        ])->get();
+    }
 
 
      /**

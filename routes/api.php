@@ -42,6 +42,8 @@ Route::get('predio/propietario',[PredioController::class,'predioProp']);
 
 Route::get('levantamiento/permiso',[LevantamientoController::class,'permiso']);
 Route::post('levantamientos',[LevantamientoController::class,'store']);
+Route::get('levantamientos',[LevantamientoController::class,'index']);
+
 
 Route::get('proyecto',[ProyectoController::class,'index']);
 Route::get('proyecto/dept',[ProyectoController::class,'proyByDept']);
