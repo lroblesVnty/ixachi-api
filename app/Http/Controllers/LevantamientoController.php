@@ -15,15 +15,35 @@ class LevantamientoController extends Controller{
 
     public function index() {
         
-        return Levantamiento::select('IdLevantamiento',DB::raw("DATE_FORMAT(fechaLevantamiento, '%d-%m-%Y') as fechaLevantamiento"),'numFiniquito','IdPermiso')
+        return Levantamiento::select('IdLevantamiento',DB::raw("DATE_FORMAT(fechaLevantamiento, '%d/%m/%Y') as fechaLevantamiento"),'numFiniquito','nombreStatus as statusPago','IdPermiso')
+        ->join('gescatestatuspago', 'geslevantamientos.idStatusPago', '=', 'gescatestatuspago.idStatusPago')//checar si hacer un controlador y modelo para gescatestatuspago
         ->with(['permiso' => function ($query) {
             $query->select('IdPermiso','fechaPermiso','numPermiso','IdPredio');
         }, 'permiso.predio' => function ($query) {
-            $query->select('IdPredio', 'IdPropietario');
+            $query->select('IdPredio', 'IdPropietario','idProyecto')
+            ->join('gesconfiguracionlineas', 'gespredios.idLinea', '=', 'gesconfiguracionlineas.linea');
         },'permiso.predio.propietario'=>function($query){
             $query->select('IdPropietario',DB::raw("CONCAT_WS(' ', nombre, apPaterno, apMaterno) AS nombre"));
         }
         ])->get();
+    }
+
+    public function show($id){
+
+        return Levantamiento::select('IdLevantamiento',DB::raw("DATE_FORMAT(fechaLevantamiento, '%d/%m/%Y') as fechaLevantamiento"),'numFiniquito','nombreStatus as statusPago','observaciones','IdPermiso')
+        ->join('gescatestatuspago', 'geslevantamientos.idStatusPago', '=', 'gescatestatuspago.idStatusPago')//checar si hacer un controlador y modelo para gescatestatuspago
+        ->with(['permiso' => function ($query) {
+            $query->select('IdPermiso','fechaPermiso','numPermiso','IdPredio');
+        }, 'permiso.predio' => function ($query) {
+            $query->select('IdPredio', 'IdPropietario','idProyecto')
+            ->join('gesconfiguracionlineas', 'gespredios.idLinea', '=', 'gesconfiguracionlineas.linea');
+        },'permiso.predio.propietario'=>function($query){
+            $query->select('IdPropietario',DB::raw("CONCAT_WS(' ', nombre, apPaterno, apMaterno) AS nombre"));
+        }
+        ])->where('idLevantamiento', '=', $id)->firstOrFail();
+       // ->get();
+
+
     }
 
 

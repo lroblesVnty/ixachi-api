@@ -8,8 +8,8 @@ use App\Models\Linea;
 use App\Models\Permiso;
 use App\Models\Predio;
 use App\Models\Propietario;
-//use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Builder;
+//use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
