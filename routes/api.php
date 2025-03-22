@@ -44,6 +44,7 @@ Route::get('levantamiento/permiso',[LevantamientoController::class,'permiso']);
 Route::post('levantamientos',[LevantamientoController::class,'store']);
 Route::get('levantamientos',[LevantamientoController::class,'index']);
 Route::get('levantamientos/{id}',[LevantamientoController::class,'show']);
+Route::get('levantamientos/{id}/detalles',[LevantamientoController::class,'detalleByLev']);
 
 
 Route::get('proyecto',[ProyectoController::class,'index']);

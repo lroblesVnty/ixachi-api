@@ -10,6 +10,7 @@ use App\Http\Requests\StoreLevantamientoRequest;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class LevantamientoController extends Controller{
 
@@ -104,5 +105,21 @@ class LevantamientoController extends Controller{
     public function permiso(){
         $permisos=Levantamiento::with('permiso:IdPermiso,fechaPermiso,numPermiso')->get(['IdLevantamiento','fechaLevantamiento','numFiniquito','IdPermiso']);
         return $permisos;
+    }
+
+    public function detalleByLev($idLev){
+        $levantamiento= Levantamiento::with([
+            'detalles' => [
+                'afectacion:idCultivo,cultivo,precioHectarea',
+                'tipLinea',
+            ],
+        ])
+        ->findOrFail($idLev,['idLevantamiento','fechaLevantamiento','imgUrl']);
+        if ($levantamiento->imgUrl) {
+            $levantamiento->imgUrl = url(Storage::url($levantamiento->imgUrl));
+        } 
+        
+        return $levantamiento;
+        
     }
 }

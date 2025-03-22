@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Levantamiento extends Model{
     use HasFactory;
@@ -31,5 +33,26 @@ class Levantamiento extends Model{
         // Formateamos la fecha `created_at` al formato `dd-mm-YYYY`
         return Carbon::parse($this->attributes['fechaLevantamiento'])->format('d-m-Y');
     }
+
+  /*   public function getImgUrlAttribute(){//*al parecer esto no funciona porque la columna de la BD esta en camelCase y no en snake_case
+        if ($this->imgUrl) {
+            return url(Storage::url($this->imgUrl));
+        }
+
+        return null;
+    }
+ */
+
+
+    /**
+     * Get the user's first name.
+     */
+   /*  protected function imgUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value ? 'ok': null,
+        );
+    } */
+
 
 }

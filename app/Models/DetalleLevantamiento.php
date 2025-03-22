@@ -17,6 +17,15 @@ class DetalleLevantamiento extends Model {
         //2do arg:FK, 3arg:PK de este modelo(levantamiento)  (padre)
         return $this->belongsTo(Levantamiento::class,'idLevantamiento','idLevantamiento');
     }
+
+    public function afectacion(): BelongsTo{
+        //2do arg:FK, 3arg:PK de modelo(cultivo)  (padre)
+        return $this->belongsTo(Cultivo::class,'idCultivo','idCultivo');
+    }
     
+    public function tipLinea(): BelongsTo{
+        //2do arg:FK, 3arg:PK de  modelo(tipoLinea)  (padre)
+        return $this->belongsTo(TipoLinea::class,'tipoLinea','idTipoLinea');
+    }
 
 }

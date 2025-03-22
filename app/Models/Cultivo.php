@@ -10,5 +10,5 @@ class Cultivo extends Model{
 
     protected $table='gescultivostab';
     public $timestamps=false;
-    protected $primaryKey='IdCultivo';
+    protected $primaryKey='idCultivo';
 }
