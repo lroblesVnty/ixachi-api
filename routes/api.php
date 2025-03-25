@@ -45,6 +45,7 @@ Route::post('levantamientos',[LevantamientoController::class,'store']);
 Route::get('levantamientos',[LevantamientoController::class,'index']);
 Route::get('levantamientos/{id}',[LevantamientoController::class,'show']);
 Route::get('levantamientos/{id}/detalles',[LevantamientoController::class,'detalleByLev']);
+Route::get('levantamiento/excel', [LevantamientoController::class, 'exportLevs']);
 
 
 Route::get('proyecto',[ProyectoController::class,'index']);

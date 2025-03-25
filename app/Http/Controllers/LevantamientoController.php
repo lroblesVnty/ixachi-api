@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LevsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Levantamiento;
 use Illuminate\Http\Request;
@@ -11,6 +12,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 
 class LevantamientoController extends Controller{
 
@@ -122,4 +126,9 @@ class LevantamientoController extends Controller{
         return $levantamiento;
         
     }
+
+    public function exportLevs(): BinaryFileResponse{
+        return Excel::download(new LevsExport, 'levs.xlsx');
+    }
+
 }
