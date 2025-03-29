@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LevsExport;
+use App\Exports\LevsViewExport;
 use App\Http\Controllers\Controller;
 use App\Models\Levantamiento;
 use Illuminate\Http\Request;
@@ -128,7 +129,20 @@ class LevantamientoController extends Controller{
     }
 
     public function exportLevs(): BinaryFileResponse{
-        return Excel::download(new LevsExport, 'levs.xlsx');
+    //public function exportLevs(){
+        //return Excel::download(new LevsExport, 'levs.xlsx');
+      
+       $datos=Levantamiento::with([
+            'detalles' => [
+                'afectacion:idCultivo,cultivo,precioHectarea',
+                'tipLinea',
+            ],
+        ])
+        ->get(['idLevantamiento','fechaLevantamiento'])->toArray();
+         return Excel::download(new LevsViewExport, 'levs.xlsx');
+      // return response((["hola"=>"mundo"]));
+           // return view('exports.detalleLev',compact('datos'));
+
     }
 
 }
