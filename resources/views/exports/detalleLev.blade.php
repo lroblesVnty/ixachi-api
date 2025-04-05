@@ -40,7 +40,7 @@
                     <td>{{ $detail['mtsIni']??'' }}</td>
                     <td>{{ $detail['estacaFin'] }}</td>
                     <td>{{ $detail['mtsFin'] }}</td>
-                    <td>0</td>
+                    <td>{{ $detail['afectacion']['cultivo'] }}</td>
                     <td>{{ $detail['metros'] }}</td>
                     <td>{{ $detail['metros2'] }}</td>
                     <td>{{ $detail['km'] }}</td>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DetalleLevsViewExport;
 use App\Exports\LevsExport;
 use App\Exports\LevsViewExport;
 use App\Http\Controllers\Controller;
@@ -138,11 +139,25 @@ class LevantamientoController extends Controller{
                 'tipLinea',
             ],
         ])
-        ->get(['idLevantamiento','fechaLevantamiento'])->toArray();
-         return Excel::download(new LevsViewExport, 'levs.xlsx');
-      // return response((["hola"=>"mundo"]));
-           // return view('exports.detalleLev',compact('datos'));
+        ->findOrFail(202,['idLevantamiento','fechaLevantamiento'])->toArray();
+        $currDate=date("d-m-Y");
+        $nameFile='levs'.$currDate.'.xlsx';
+        return Excel::download(new LevsViewExport, $nameFile);
+        //return response((["hola"=>date("d/m/Y")]));
+        // return view('exports.detalleLevById',compact('datos'));
 
     }
+
+    public function exportLevsById($id): BinaryFileResponse{
+            $currDate=date("d-m-Y");
+            $nameFile='levs'.$currDate.'.xlsx';
+            return Excel::download(new DetalleLevsViewExport($id), $nameFile,null,[
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="'.$nameFile.'"',
+            ]);
+            //return response((["hola"=>date("d/m/Y")]));
+            // return view('exports.detalleLevById',compact('datos'));
+    
+        }
 
 }
