@@ -49,4 +49,28 @@ class PropietarioController extends Controller
         ->get();
         //->get(['IdPermiso','numPermiso','IdPredio']);
     }
+
+    public function propExpedienteComp(){
+       // return Propietario::withWhereHas('predios:IdPredio,IdPropietario')
+
+       return DB::table('gescontabilidadestatus')
+       ->join('gespermisos', 'gescontabilidadestatus.IdPermiso', '=', 'gespermisos.IdPermiso')
+       ->join('gespredios', 'gespermisos.IdPredio', '=', 'gespredios.IdPredio')
+       ->join('gespropietarios', 'gespredios.IdPropietario','gespropietarios.IdPropietario')
+       ->join('gescatstatusconta', 'gescontabilidadestatus.idCatEstatusConta','gescatstatusconta.idStatusConta')
+       ->join('gesconfiguracionlineas', 'gespredios.idLinea','gesconfiguracionlineas.linea')
+       ->select('idContabilidadEstatus','gespermisos.IdPermiso', 'gespermisos.IdPredio', 'gesPredios.IdLinea',DB::raw("CONCAT_WS(' ', nombre, apPaterno, apMaterno) AS propietario"),'RFC','nombreStatus','IdLinea','idProyecto')
+       ->orderBy('propietario')
+       ->get();
+
+
+        return Propietario::withWhereHas('predios',function ($q){
+            $q->select('IdPropietario','IdPredio');  
+
+        })
+        //->join('gespermisos', 'gespermisos.IdPredio', '=', 'gespredios.IdPredio')
+        ->select('IdPropietario',DB::raw("CONCAT_WS(' ', nombre, apPaterno, apMaterno) AS nombre"),'domicilio','rfc')//checfar consulta para cpntabilidad
+        ->get();
+        
+    }
 }

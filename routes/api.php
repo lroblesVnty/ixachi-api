@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('propietario',[PropietarioController::class,'index']);
 Route::get('propietario/predios',[PropietarioController::class,'predios']);
 Route::get('propietario/permisos',[PropietarioController::class,'permisosPred']);
+Route::get('propietario/exp-completo',[PropietarioController::class,'propExpedienteComp']);
+
 
 Route::get('permiso',[PermisoController::class,'index']);
 Route::get('permiso/predio',[PermisoController::class,'predio']);
