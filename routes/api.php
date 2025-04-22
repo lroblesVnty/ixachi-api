@@ -61,3 +61,8 @@ Route::get('cultivos',[CultivoController::class,'index']);
 
 Route::get('estacas',[EstacaController::class,'estacasbylinea']);
 Route::get('estacaFinal',[EstacaController::class,'getEstacaFinal']);
+
+
+//php artisan make:model Departament -mcrf --api
+// -r=Genera el controlador como un controlador de recursos (Resource Controller), lo que incluye métodos CRUD
+
