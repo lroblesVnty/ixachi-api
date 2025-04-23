@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CultivoController;
 use App\Http\Controllers\EstacaController;
 use App\Http\Controllers\LevantamientoController;
@@ -22,11 +23,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+}); */
+
+
+Route::post('register',[AuthController::class,'create']);
+Route::post('login',[AuthController::class,'login']);
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('user',[AuthController::class,'index']);
+    Route::get('logout',[AuthController::class,'logout']);
 });
-
-
 
 Route::get('propietario',[PropietarioController::class,'index']);
 Route::get('propietario/predios',[PropietarioController::class,'predios']);
@@ -61,6 +70,10 @@ Route::get('cultivos',[CultivoController::class,'index']);
 
 Route::get('estacas',[EstacaController::class,'estacasbylinea']);
 Route::get('estacaFinal',[EstacaController::class,'getEstacaFinal']);
+
+
+
+
 
 
 //php artisan make:model Departament -mcrf --api

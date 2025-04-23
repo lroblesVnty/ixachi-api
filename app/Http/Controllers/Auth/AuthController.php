@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Validator;
 //use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller{
+
+    public function index(Request $request){
+        return $request->user();
+    }
     
     public function create(Request $request){
         $rules=[
@@ -56,9 +60,6 @@ class AuthController extends Controller{
        // $user=User::where('email',$request->email)->first();//*obtener ususario aunque no esté autenticado
         $user = Auth::user();//* obtener ususario autenticado
         /** @var \App\Models\User $user */
-
-        //TODO checar como funcionan las cookies 
-        //
         
         return response()->json([
             'status'=>true,
@@ -66,9 +67,20 @@ class AuthController extends Controller{
             'data'=>$user,
             'access_token'=>$user->createToken('auth-token')->plainTextToken
 
-        ]);
-
-
-        
+        ]); 
     }
+
+    public function logout() {
+        /** @var \App\Models\User $user */
+        auth()->user()->tokens()->delete();
+        //Intelephense: Index Workspace//* ejecutar en vscode si marca error en metodo tokens()
+       /*  $user = auth()->user();
+        $user->tokens()->delete(); */
+        //auth()->user()->currentAccessToken()->delete();//*eliminar solo el token actual
+        return response()->json([
+            'status'=>true,
+            'message'=>'Sesion cerrada correctamente'
+        ]); 
+    }
+    
 }
