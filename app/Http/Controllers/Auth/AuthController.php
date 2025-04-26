@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cookie;
 //use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller{
@@ -60,14 +61,17 @@ class AuthController extends Controller{
        // $user=User::where('email',$request->email)->first();//*obtener ususario aunque no esté autenticado
         $user = Auth::user();//* obtener ususario autenticado
         /** @var \App\Models\User $user */
+
+        $token=$user->createToken('auth-token')->plainTextToken;
+        $cookie = cookie('cookie_token', $token, 60 * 24);
         
         return response()->json([
             'status'=>true,
             'message'=>'Sesion iniciada correctamente',
             'data'=>$user,
-            'access_token'=>$user->createToken('auth-token')->plainTextToken
+            'access_token'=>$token
 
-        ]); 
+        ])->withCookie($cookie); 
     }
 
     public function logout() {
@@ -77,10 +81,11 @@ class AuthController extends Controller{
        /*  $user = auth()->user();
         $user->tokens()->delete(); */
         //auth()->user()->currentAccessToken()->delete();//*eliminar solo el token actual
+        $cookie = Cookie::forget('cookie_token');
         return response()->json([
             'status'=>true,
             'message'=>'Sesion cerrada correctamente'
-        ]); 
+        ])->withCookie($cookie); 
     }
     
 }
