@@ -28,6 +28,10 @@ use Illuminate\Support\Facades\Route;
 }); */
 
 
+Route::middleware(['auth:sanctum', 'role:admin'])->get('/dashboard', function () {
+    return response()->json(['message' => 'Bienvenido, administrador']);
+});
+
 Route::post('register',[AuthController::class,'create']);
 Route::post('login',[AuthController::class,'login']);
 

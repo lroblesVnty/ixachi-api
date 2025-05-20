@@ -33,6 +33,9 @@ class AuthController extends Controller{
             'email'=>$request->email,
             'password'=>Hash::make($request->password)
         ]);
+        //$user->assignRole('admin');//asignar un rol al usuario
+        //$user->assignRole(['admin', 'editor']);//asignar mass de un role
+
         return response()->json([
             'status'=>true,
             'message'=>'Usuario creado exitosamente',
