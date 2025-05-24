@@ -44,7 +44,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('propietario',[PropietarioController::class,'index']);
 Route::get('propietario/predios',[PropietarioController::class,'predios']);
 Route::get('propietario/permisos',[PropietarioController::class,'permisosPred']);
-Route::get('propietario/exp-completo',[PropietarioController::class,'propExpedienteComp']);
+
+Route::middleware(['auth:sanctum', 'role:contador|admin'])->get('propietario/exp-completo',[PropietarioController::class,'propExpedienteComp']);
+//Route::get('propietario/exp-completo',[PropietarioController::class,'propExpedienteComp']);
 
 
 Route::get('permiso',[PermisoController::class,'index']);

@@ -64,9 +64,11 @@ class AuthController extends Controller{
        // $user=User::where('email',$request->email)->first();//*obtener ususario aunque no esté autenticado
         $user = Auth::user();//* obtener ususario autenticado
         /** @var \App\Models\User $user */
+       // $user->user_roless = $user->getRoleNames()->toArray();//*regresa los roles del usuario
 
         $token=$user->createToken('auth-token')->plainTextToken;
         $cookie = cookie('cookie_token', $token, 60 * 24);
+       //? $rolesById = $user->getRoleNames()->toArray();
         
         return response()->json([
             'status'=>true,

@@ -17,6 +17,7 @@ class RolesPermissionsSeeder extends Seeder
         $gestorRole = Role::create(['name' => 'gestor']);
         $levantadorRole = Role::create(['name' => 'levantador de afectaciones']);
         $contaRole = Role::create(['name' => 'contador']);
+        //$contaRole = Role::create(['name' => 'contador','guard_name' => 'api']);
 
         $addLevsPermission = Permission::create(['name' => 'add levs']);
         $deleteLevsPermission = Permission::create(['name' => 'delete levs']);

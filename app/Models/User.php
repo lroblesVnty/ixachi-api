@@ -18,7 +18,7 @@ class User extends Authenticatable
     use HasRoles, HasPermissions;
 
 
-
+    protected $guard_name = 'api';
 
     /**
      * The attributes that are mass assignable.
@@ -40,7 +40,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'roles',
     ];
 
     /**
@@ -51,4 +52,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getRoleNamesAttribute(){
+        return $this->getRoleNames(); // Este método ya devuelve una Collection de Spatie
+    }
+    protected $appends = ['role_names'];
 }

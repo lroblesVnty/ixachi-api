@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'sanctum', // <--- Este es el guard que estás usando con sanctum
+            'provider' => 'users',
+        ],
     ],
 
     /*
