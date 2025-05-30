@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cookie;
+use Carbon\Carbon; // Asegúrate de importar Carbon
 //use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller{
@@ -66,15 +67,21 @@ class AuthController extends Controller{
         /** @var \App\Models\User $user */
        // $user->user_roless = $user->getRoleNames()->toArray();//*regresa los roles del usuario
 
-        $token=$user->createToken('auth-token')->plainTextToken;
-        $cookie = cookie('cookie_token', $token, 60 * 24);
+        //$token=$user->createToken('auth-token')->plainTextToken;
+        $tokenResult = $user->createToken('auth-token',['*'],Carbon::now()->addMinutes(30));
+       
+
+        $tokenPlainText = $tokenResult->plainTextToken; // El token para el cliente
+        $expiresAt =$tokenResult->accessToken->expires_at;
+        $cookie = cookie('cookie_token', $tokenPlainText, 60 * 24);
        //? $rolesById = $user->getRoleNames()->toArray();
         
         return response()->json([
             'status'=>true,
             'message'=>'Sesion iniciada correctamente',
             'data'=>$user,
-            'access_token'=>$token
+            'access_token'=>$tokenPlainText,
+            'expires_at' =>$expiresAt ? Carbon::parse($expiresAt)->toDateTimeString() : null,
 
         ])->withCookie($cookie); 
     }
